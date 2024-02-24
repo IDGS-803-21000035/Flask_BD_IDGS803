@@ -9,6 +9,7 @@ from config import DevelopmentConfig
 
 import forms
 
+#importación de las tablas
 from models import db, Alumnos
 
 app = Flask(__name__)
