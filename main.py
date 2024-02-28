@@ -23,12 +23,26 @@ def page_not_found(e):
 
 
 
-@app.route("/index")
+@app.route("/index", methods=["GET", "POST"])
 def index():
-    escuela = "UTL!!"
-    alumnos = ["mario", "Pedro", "Luis", "Dario"]
-    return render_template("index.html", escuela = escuela, alumnos = alumnos)
+    alum_form = forms.UserForm2(request.form)
+    if request.method == 'POST':
+        #instancia de clase
+        alum = Alumnos(nombre=alum_form.nombre.data, apaterno = alum_form.apaterno.data, email = alum_form.email.data)
 
+        #usar orm, con add inserto parametros
+        db.session.add(alum)
+        #guardar ddatos
+        db.session.commit()
+
+    
+    return render_template("index.html", form = alum_form)
+
+@app.route("/ABC_Completo", methods = ["GET","POST"])
+def ABC_Completo():
+    alum_form = forms.UserForm2(request.form)
+    alumno = Alumnos.query.all()
+    return render_template("ABC_Completo.html", alumnos = alumno)
 
 @app.route("/alumnos", methods=["GET", "POST"])
 def alumnos():
